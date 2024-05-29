@@ -1,0 +1,26 @@
+################################################
+# сделаю модульно, чтобы проще было разобраться:
+#
+################################################
+
+#Модуль_1 - с этого все начинается, это является телом он начинается тут (do) и кончается (end) в конце скрипта.
+Vagrant.configure("2") do |config| # мы используем псевдоним "config" для чтобы не писать "Vagrant.configure("2")"
+     config.vm.box = "geerlingguy/ubuntu2004" # задаем из какого образа ставим (образы уже должны быть загружены)
+# Модуль_2 - настраиваем сеть
+     config.vm.network "public_network", ip: "192.168.0.100" # указываем ip адрес сети
+                                                       # (если интерфейсов больше 1 то она спросит какой использовать)
+     config.vm.hostname = "Node-I" # указываем netbios имя машины
+
+# монтирует папки
+     config.vm.synced_folder "~/vg", "/mnt" # первая папка какую (на хосте) вторая куда (на клиенте)
+# выполняет команды в баше
+     config.vm.provision "shell", inline: <<-SHELL
+        useradd -m -s /bin/bash -G sudo sitis
+        echo "sitis:205967" | chpasswd
+        mkdir /home/sitis/.ssh
+        echo ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOfBVwCZeX9htDVpfmyxdPx9sBDPbx5+e/m6yCa8Pj55 sitis@Sitis.local > /home/sitis/.ssh/authorized_keys
+        mkdir /opt/devopsdir
+        free -m
+        uptime
+     SHELL
+end
