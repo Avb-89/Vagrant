@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config| # мы используем псевдони�
 # выполняет команды в баше
      config.vm.provision "shell", inline: <<-SHELL
         useradd -m -s /bin/bash -G sudo sitis
-        echo "sitis:205967" | chpasswd
+        echo "sitis:123456" | chpasswd
         mkdir /home/sitis/.ssh
         echo ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOfBVwCZeX9htDVpfmyxdPx9sBDPbx5+e/m6yCa8Pj55 sitis@Sitis.local > /home/sitis/.ssh/authorized_keys
         mkdir /opt/devopsdir
